@@ -2,14 +2,18 @@ import {} from 'dotenv/config.js';
 import passport from 'passport';
 import express from 'express';
 import expressSession from 'express-session';
-import routes from './routes/index.js';
-import initializeAuthorization from './auth/index.js';
+
+import routes from './src/routes/index.js';
+import initializeAuthorization from './src/auth/index.js';
+import initializeDatabase from './src/db/index.js';
+
+const { SESSION_SECRET, PORT } = process.env;
 
 const app = express();
-const port = process.env.PORT || 3000;
-const { SESSION_SECRET } = process.env;
+const port = PORT ?? 3000;
 
 initializeAuthorization();
+initializeDatabase();
 
 app.use(
   expressSession({
