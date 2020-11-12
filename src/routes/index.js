@@ -1,5 +1,6 @@
 import express from 'express';
-import routerAuthorization from './routerAuthorization.js';
+import authorizationRouter from './authorizationRouter.js';
+import notesRouter from './notesRouter.js';
 
 const router = express.Router();
 
@@ -8,6 +9,7 @@ router.get('/', (req, res, next) => {
   res.status(200).send({ sessionID: req.sessionID, user });
 });
 
-routerAuthorization(router);
+authorizationRouter(router);
+notesRouter(router);
 
 export default router;

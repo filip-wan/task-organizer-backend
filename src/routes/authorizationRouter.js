@@ -1,6 +1,6 @@
 import passport from 'passport';
 
-const routerAuthorization = (router) => {
+const authorizationRouter = (router) => {
   router.get(
     '/auth/google',
     passport.authenticate('google', { scope: ['profile'] })
@@ -44,4 +44,4 @@ const routerAuthorization = (router) => {
   });
 };
 
-export default routerAuthorization;
+export default authorizationRouter;

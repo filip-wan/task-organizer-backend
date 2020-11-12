@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 export const itemSchema = mongoose.Schema({
   user: {
-    required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
