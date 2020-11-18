@@ -1,6 +1,7 @@
 import { Strategy as StrategyGoogle } from 'passport-google-oauth20';
 import { Strategy as StrategyFacebook } from 'passport-facebook';
 import { Strategy as StrategyGithub } from 'passport-github2';
+import { User } from '../db/models/User.js';
 
 const strategy = {
   google: StrategyGoogle,
@@ -15,7 +16,23 @@ const getStrategy = (name) =>
       clientSecret: process.env[name.toUpperCase() + '_CLIENT_SECRET'],
       callbackURL: `/auth/${name}/redirect`,
     },
-    (_accessToken, _refreshToken, profile, cb) => cb(null, profile)
+    async (_accessToken, _refreshToken, profile, done) => {
+      const currentUser = await User.findOne({
+        [name]: profile.id,
+      });
+
+      if (!currentUser) {
+        const newUser = await new User({
+          name: profile.displayName || profile.username,
+          [name]: profile.id,
+        }).save();
+
+        if (newUser) {
+          return done(null, newUser);
+        }
+      }
+      done(null, currentUser);
+    }
   );
 
 export default getStrategy;

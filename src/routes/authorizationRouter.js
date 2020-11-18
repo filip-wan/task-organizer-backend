@@ -1,6 +1,17 @@
 import passport from 'passport';
+import { secured } from './secured.js';
 
 const authorizationRouter = (router) => {
+  router.get('/auth', secured, (req, res) => {
+    console.log(req);
+    res.json({
+      success: true,
+      message: 'user has successfully authenticated',
+      user: req.user,
+      cookies: req.cookies,
+    });
+  });
+
   router.get(
     '/auth/google',
     passport.authenticate('google', { scope: ['profile'] })
@@ -19,7 +30,7 @@ const authorizationRouter = (router) => {
     '/auth/google/redirect',
     passport.authenticate('google', { failureRedirect: '/' }),
     (_req, res) => {
-      res.redirect('/');
+      res.redirect('http://localhost:3000/');
     }
   );
 
@@ -27,20 +38,20 @@ const authorizationRouter = (router) => {
     '/auth/facebook/redirect',
     passport.authenticate('facebook', { failureRedirect: '/' }),
     (_req, res) => {
-      res.redirect('/');
+      res.redirect('http://localhost:3000/');
     }
   );
   router.get(
     '/auth/github/redirect',
     passport.authenticate('github', { failureRedirect: '/' }),
     (_req, res) => {
-      res.redirect('/');
+      res.redirect('http://localhost:3000/');
     }
   );
 
   router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.status(204).send();
   });
 };
 
