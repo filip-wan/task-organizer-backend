@@ -3,7 +3,11 @@ import { getUser } from './controllers/userController.js';
 
 const initializeDatabase = () => {
   const dbPath = process.env.DATABASE_URL;
-  const options = { useNewUrlParser: true, useUnifiedTopology: true };
+  const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  };
   const mongo = mongoose.connect(dbPath, options);
 
   mongo.then(
