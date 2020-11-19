@@ -9,7 +9,13 @@ import routes from './src/routes/index.js';
 import initializeAuthorization from './src/auth/index.js';
 import initializeDatabase from './src/db/index.js';
 
-const { SESSION_SECRET, PORT, WEBSITE_URL, WEBSITE_URL_ORIGIN } = process.env;
+const {
+  SESSION_SECRET,
+  PORT,
+  SSL,
+  WEBSITE_URL,
+  WEBSITE_URL_ORIGIN,
+} = process.env;
 
 const app = express();
 const port = PORT ?? 3000;
@@ -22,6 +28,11 @@ app.use(
     secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      secure: SSL == true,
+      httpOnly: SSL != true,
+      sameSite: 'none',
+    },
   })
 );
 app.use(passport.initialize());
