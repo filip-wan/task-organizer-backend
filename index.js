@@ -28,6 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(bodyParser.json());
+app.enable('trust proxy');
 app.use(
   cors({
     origin: WEBSITE_URL, // allow to server to accept request from different origin
