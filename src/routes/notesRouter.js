@@ -1,13 +1,11 @@
-import passport from 'passport';
-import cors from 'cors';
 import { Note } from '../db/models/Note.js';
 import { secured } from './secured.js';
 
 const notesAuthorization = (router) => {
   router.get('/notes', secured, async (req, res) => {
     console.log('GET from', req.user);
-    const movies = await Note.find({ user: req.user._id });
-    res.send(movies);
+    const notes = await Note.find({ user: req.user._id });
+    res.send(notes);
   });
 
   router.put('/notes/:id', secured, async (req, res) => {
