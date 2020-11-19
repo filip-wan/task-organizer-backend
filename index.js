@@ -9,7 +9,7 @@ import routes from './src/routes/index.js';
 import initializeAuthorization from './src/auth/index.js';
 import initializeDatabase from './src/db/index.js';
 
-const { SESSION_SECRET, PORT } = process.env;
+const { SESSION_SECRET, PORT, WEBSITE_URL } = process.env;
 
 const app = express();
 const port = PORT ?? 3000;
@@ -30,7 +30,7 @@ app.use(passport.session());
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: 'http://localhost:3000', // allow to server to accept request from different origin
+    origin: WEBSITE_URL, // allow to server to accept request from different origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // allow session cookie from browser to pass through
   })

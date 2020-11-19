@@ -2,14 +2,22 @@ import passport from 'passport';
 import { secured } from './secured.js';
 
 const authorizationRouter = (router) => {
-  router.get('/auth', secured, (req, res) => {
-    console.log(req);
-    res.json({
-      success: true,
-      message: 'user has successfully authenticated',
-      user: req.user,
-      cookies: req.cookies,
-    });
+  const { WEBSITE_URL } = process.env;
+
+  router.get('/auth', (req, res) => {
+    res.json(
+      req.user
+        ? {
+            success: true,
+            message: 'user has successfully authenticated',
+            user: req.user,
+            cookies: req.cookies,
+          }
+        : {
+            success: false,
+            message: 'user is not authenticated',
+          }
+    );
   });
 
   router.get(
@@ -27,25 +35,14 @@ const authorizationRouter = (router) => {
   );
 
   router.get(
-    '/auth/google/redirect',
-    passport.authenticate('google', { failureRedirect: '/' }),
+    '/auth/:type/redirect',
+    (req, ...res) =>
+      passport.authenticate(req.params.type, { failureRedirect: '/' })(
+        req,
+        ...res
+      ),
     (_req, res) => {
-      res.redirect('http://localhost:3000/');
-    }
-  );
-
-  router.get(
-    '/auth/facebook/redirect',
-    passport.authenticate('facebook', { failureRedirect: '/' }),
-    (_req, res) => {
-      res.redirect('http://localhost:3000/');
-    }
-  );
-  router.get(
-    '/auth/github/redirect',
-    passport.authenticate('github', { failureRedirect: '/' }),
-    (_req, res) => {
-      res.redirect('http://localhost:3000/');
+      res.redirect(WEBSITE_URL || '/');
     }
   );
 
