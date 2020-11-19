@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "run": "node index.js",
+    "start": "node index.js",
+    "run": "nodemon index.js",
     "mongo": "mongod --port 27017 --dbpath F:/dev/mongodb"
   },
   "author": "",
