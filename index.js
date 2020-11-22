@@ -28,11 +28,13 @@ app.use(
     secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-    cookie: {
-      secure: SSL == true,
-      httpOnly: SSL != true,
-      sameSite: 'none',
-    },
+    cookie:
+      SSL == true
+        ? {
+            secure: true,
+            sameSite: 'none',
+          }
+        : { httpOnly: true },
   })
 );
 app.use(passport.initialize());

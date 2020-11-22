@@ -1,7 +1,7 @@
 import { Todo } from '../db/models/Todo.js';
 import { secured } from './secured.js';
 
-const todosAuthorization = (router) => {
+const todosRouter = (router) => {
   router.get('/todos', secured, async (req, res) => {
     console.log('GET from', req.user);
     const todos = await Todo.find({ user: req.user._id });
@@ -34,4 +34,4 @@ const todosAuthorization = (router) => {
   });
 };
 
-export default todosAuthorization;
+export default todosRouter;

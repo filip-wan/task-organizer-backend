@@ -1,7 +1,7 @@
 import { Note } from '../db/models/Note.js';
 import { secured } from './secured.js';
 
-const notesAuthorization = (router) => {
+const notesRouter = (router) => {
   router.get('/notes', secured, async (req, res) => {
     console.log('GET from', req.user);
     const notes = await Note.find({ user: req.user._id });
@@ -34,4 +34,4 @@ const notesAuthorization = (router) => {
   });
 };
 
-export default notesAuthorization;
+export default notesRouter;
