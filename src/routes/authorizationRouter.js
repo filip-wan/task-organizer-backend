@@ -1,5 +1,4 @@
 import passport from 'passport';
-import { secured } from './secured.js';
 
 const authorizationRouter = (router) => {
   const { WEBSITE_URL } = process.env;
@@ -10,7 +9,8 @@ const authorizationRouter = (router) => {
         ? {
             success: true,
             message: 'user has successfully authenticated',
-            user: req.user,
+            user: req.user.userData,
+            credentials: req.user.credentials,
             cookies: req.cookies,
           }
         : {
@@ -22,7 +22,14 @@ const authorizationRouter = (router) => {
 
   router.get(
     '/auth/google',
-    passport.authenticate('google', { scope: ['profile'] })
+    passport.authenticate('google', {
+      scope: [
+        'profile',
+        'email',
+        'https://www.googleapis.com/auth/calendar',
+        'https://www.googleapis.com/auth/calendar.events',
+      ],
+    })
   );
 
   router.get('/auth/facebook', passport.authenticate('facebook'));

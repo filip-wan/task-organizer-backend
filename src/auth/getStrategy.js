@@ -25,11 +25,23 @@ const getStrategy = (name) =>
         const newUser = await new User({
           name: profile.displayName || profile.username,
           [name]: profile.id,
+          email: profile._json?.email,
+          credentials: {
+            _accessToken,
+            _refreshToken,
+          },
         }).save();
 
         if (newUser) {
           return done(null, newUser);
         }
+      } else {
+        await currentUser.update({
+          credentials: {
+            _accessToken,
+            _refreshToken,
+          },
+        });
       }
       done(null, currentUser);
     }

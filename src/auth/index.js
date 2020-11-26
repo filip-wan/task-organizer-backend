@@ -11,8 +11,9 @@ const initializeAuthorization = () => {
 
   passport.deserializeUser((id, done) =>
     User.findById(id)
-      .then((user) => {
-        done(null, user);
+      .then((user) => user.toObject())
+      .then(({ credentials, ...userData }) => {
+        done(null, { credentials, userData, id: userData._id });
       })
       .catch((e) => {
         done(new Error('Failed to deserialize an user'));

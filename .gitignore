@@ -22,3 +22,7 @@ coverage
 
 # Benchmarking
 benchmarks/graphs
+
+# SSL
+*.cert
+*.key

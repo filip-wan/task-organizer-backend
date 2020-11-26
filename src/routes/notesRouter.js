@@ -4,13 +4,13 @@ import { secured } from './secured.js';
 const notesRouter = (router) => {
   router.get('/notes', secured, async (req, res) => {
     console.log('GET from', req.user);
-    const notes = await Note.find({ user: req.user._id });
+    const notes = await Note.find({ user: req.user.id });
     res.send(notes);
   });
 
   router.put('/notes/:id', secured, async (req, res) => {
     const note = await Note.findOneAndUpdate(
-      { _id: req.params.id, user: req.user._id },
+      { _id: req.params.id, user: req.user.id },
       req.body,
       {
         new: true,
@@ -20,7 +20,7 @@ const notesRouter = (router) => {
   });
 
   router.post('/notes', secured, async (req, res) => {
-    const note = new Note({ ...req.body, user: req.user._id });
+    const note = new Note({ ...req.body, user: req.user.id });
     await note.save();
     res.send(note);
   });
@@ -28,7 +28,7 @@ const notesRouter = (router) => {
   router.delete('/notes/:id', secured, async (req, res) => {
     const note = await Note.findOneAndDelete({
       _id: req.params.id,
-      user: req.user._id,
+      user: req.user.id,
     });
     res.send(note);
   });

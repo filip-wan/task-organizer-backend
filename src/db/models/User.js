@@ -17,6 +17,14 @@ const userSchema = mongoose.Schema({
   github: {
     type: String,
   },
+  credentials: {
+    _accessToken: {
+      type: String,
+    },
+    _refreshToken: {
+      type: String,
+    },
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -4,6 +4,9 @@ import express from 'express';
 import expressSession from 'express-session';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
 
 import routes from './src/routes/index.js';
 import initializeAuthorization from './src/auth/index.js';
@@ -12,6 +15,7 @@ import initializeDatabase from './src/db/index.js';
 const {
   SESSION_SECRET,
   PORT,
+  NODE_ENV,
   SSL,
   WEBSITE_URL,
   WEBSITE_URL_ORIGIN,
@@ -52,4 +56,16 @@ app.use(
 
 app.use('/', routes);
 
-app.listen(port);
+NODE_ENV === 'production'
+  ? app.listen(port)
+  : SSL
+  ? https
+      .createServer(
+        {
+          key: fs.readFileSync('server.key'),
+          cert: fs.readFileSync('server.cert'),
+        },
+        app
+      )
+      .listen(port)
+  : http.createServer(app).listen(port);
