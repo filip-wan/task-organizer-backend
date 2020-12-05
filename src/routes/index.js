@@ -8,7 +8,14 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
   const { user } = req;
-  res.status(200).send({ sessionID: req.sessionID, user: user?.userData });
+  const { calendarid } = req.headers;
+  res.status(200).send({
+    sessionID: req.sessionID,
+    user: user?.userData,
+    headers: req.headers,
+    calendarid,
+    query: req.query,
+  });
 });
 
 authorizationRouter(router);

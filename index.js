@@ -32,13 +32,15 @@ app.use(
     secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
+
     cookie:
       SSL == true
         ? {
             secure: true,
             sameSite: 'none',
+            maxAge: 2628000,
           }
-        : { httpOnly: true },
+        : { httpOnly: true, maxAge: 2628000 },
   })
 );
 app.use(passport.initialize());

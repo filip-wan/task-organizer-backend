@@ -26,11 +26,34 @@ const timeTableRouter = (router) => {
       calendar.events.list(
         {
           auth: oauth2Client,
-          calendarId: 'primary',
+          calendarId:
+            req.query.calendarId || req.headers.calendarId || 'primary',
           timeMin: new Date().toISOString(),
           maxResults: 10,
-          singleEvents: true,
-          orderBy: 'startTime',
+          singleEvents: false,
+        },
+        (err, response) => (err ? res.send(err) : res.send(response.data.items))
+      );
+    }
+  });
+
+  router.get('/calendars', secured, async (req, res) => {
+    if (req.user?.userData?.google) {
+      const {
+        _accessToken: access_token,
+        _refreshToken: refresh_token,
+      } = req.user?.credentials;
+      const oauth2Client = new OAuth2();
+      oauth2Client.credentials = {
+        access_token,
+        refresh_token,
+      };
+
+      const calendar = google.calendar({ version: 'v3' });
+
+      calendar.calendarList.list(
+        {
+          auth: oauth2Client,
         },
         (err, response) => (err ? res.send(err) : res.send(response.data.items))
       );
