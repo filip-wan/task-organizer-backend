@@ -1,8 +1,10 @@
-import express from 'express';
 import authorizationRouter from './authorizationRouter.js';
+import categoriesRouter from './categoriesRouter.js';
+import express from 'express';
 import notesRouter from './notesRouter.js';
-import todosRouter from './todosRouter.js';
+import notificationRouter from './notificationRouter.js';
 import timeTablesRouter from './timeTablesRouter.js';
+import todosRouter from './todosRouter.js';
 
 const router = express.Router();
 
@@ -18,9 +20,13 @@ router.get('/', (req, res, next) => {
   });
 });
 
-authorizationRouter(router);
-notesRouter(router);
-todosRouter(router);
-timeTablesRouter(router);
+[
+  authorizationRouter,
+  notesRouter,
+  timeTablesRouter,
+  notificationRouter,
+  todosRouter,
+  categoriesRouter,
+].forEach((r) => r(router));
 
 export default router;
