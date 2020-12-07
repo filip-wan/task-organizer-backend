@@ -14,6 +14,9 @@ const notificationSchema = mongoose.Schema({
   description: {
     type: String,
   },
+  email: {
+    type: String
+  }
 });
 
 export const Notification = mongoose.model('Notification', notificationSchema);
