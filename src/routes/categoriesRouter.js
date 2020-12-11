@@ -3,7 +3,6 @@ import { secured } from './secured.js';
 
 const categoriesRouter = (router) => {
   router.get('/categories', secured, async (req, res) => {
-    console.log('GET from', req.user);
     const categories = await Category.find({ user: req.user.id });
     res.send(categories);
   });

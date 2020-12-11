@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
 import { getUser } from './controllers/userController.js';
+import mongoose from 'mongoose';
+import { runNotifications } from '../utils/cronNotifier.js';
 
 const initializeDatabase = () => {
   const dbPath = process.env.DATABASE_URL;
@@ -13,6 +14,7 @@ const initializeDatabase = () => {
   mongo.then(
     () => {
       console.log('connected to mongo db');
+      runNotifications().catch((e) => console.log(e));
     },
     (error) => {
       console.log(error, 'mongo error');

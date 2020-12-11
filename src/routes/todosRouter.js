@@ -3,7 +3,6 @@ import { secured } from './secured.js';
 
 const todosRouter = (router) => {
   router.get('/todos', secured, async (req, res) => {
-    console.log('GET from', req.user);
     const todos = await Todo.find({ user: req.user.id });
     res.send(todos);
   });

@@ -1,12 +1,21 @@
 import mongoose from 'mongoose';
 
 const notificationSchema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
   item: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  recurring: {
+    type: Boolean,
+  },
   date: {
-    type: Date,
+    type: String,
     required: true,
+  },
+  day: {
+    type: String,
   },
   label: {
     type: String,
@@ -15,8 +24,8 @@ const notificationSchema = mongoose.Schema({
     type: String,
   },
   email: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 export const Notification = mongoose.model('Notification', notificationSchema);

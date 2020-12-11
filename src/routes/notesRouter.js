@@ -3,7 +3,6 @@ import { secured } from './secured.js';
 
 const notesRouter = (router) => {
   router.get('/notes', secured, async (req, res) => {
-    console.log('GET from', req.user);
     const notes = await Note.find({ user: req.user.id });
     res.send(notes);
   });

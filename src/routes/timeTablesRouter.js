@@ -1,11 +1,11 @@
 import { TimeTable } from '../db/models/TimeTable.js';
-import { secured } from './secured.js';
 import { google } from 'googleapis';
+import { secured } from './secured.js';
+
 const { OAuth2 } = google.auth;
 
 const timeTableRouter = (router) => {
   router.get('/timeTables', secured, async (req, res) => {
-    console.log('GET from', req.user);
     const timeTables = await TimeTable.find({ user: req.user.id });
     res.send(timeTables);
   });
