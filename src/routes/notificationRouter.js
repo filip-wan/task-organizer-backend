@@ -1,5 +1,5 @@
 import { Notification } from '../db/models/Notification.js';
-import passport from 'passport';
+import { runNotification } from '../utils/cronNotifier.js';
 import { secured } from './secured.js';
 import { sendMail } from '../utils/mailing/index.js';
 
@@ -36,6 +36,7 @@ const notificationRouter = (router) => {
 
   router.post('/notification', secured, async (req, res) => {
     const { label, description, recurring, date, day, item } = req.body;
+    console.log(req.user.userData.email);
     const notification = new Notification({
       label,
       description,
@@ -44,9 +45,10 @@ const notificationRouter = (router) => {
       day,
       user: req.user.id,
       item,
-      email: req.user.email,
+      email: req.user.userData.email,
     });
     await notification.save();
+    runNotification(notification);
     res.send(notification);
   });
 };

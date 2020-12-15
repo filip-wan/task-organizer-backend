@@ -19,6 +19,7 @@ export const sendMail = (notification, callback) => {
     subject: notification.label,
     html: `<div>\
         <h1>You have a new notification!</h1>\
+        <h3>${notification.label}</h3>\
         <span>${notification.description}</span>\
       </div>`,
   };

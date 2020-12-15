@@ -1,6 +1,6 @@
-import passport from 'passport';
-import getStrategy from './getStrategy.js';
 import { User } from '../db/models/User.js';
+import getStrategy from './getStrategy.js';
+import passport from 'passport';
 
 const initializeAuthorization = () => {
   passport.use(getStrategy('google'));

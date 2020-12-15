@@ -32,7 +32,10 @@ const authorizationRouter = (router) => {
     })
   );
 
-  router.get('/auth/facebook', passport.authenticate('facebook'));
+  router.get(
+    '/auth/facebook',
+    passport.authenticate('facebook', { scope: ['email'] })
+  );
 
   router.get(
     '/auth/github',

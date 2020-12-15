@@ -1,49 +1,53 @@
 import { CronJob } from 'cron';
 import { Notification } from '../db/models/Notification.js';
+import { sendMail } from './mailing/index.js';
 
 const cronJobs = {};
-let count = 0;
 
 const cronTask = (notification) => {
   console.log(
     'You will see this message every second',
     notification._id,
-    // cronJobs[notification._id],
-    count
+    notification.label
   );
-  count++;
-  if (!notification.recurring || count > 10) cronJobs[notification._id]?.stop();
+  sendMail(notification, console.log);
+  if (!notification.recurring) {
+    cronJobs[notification._id]?.stop();
+    Notification.findByIdAndDelete(notification._id);
+  }
 };
 
 export const runNotifications = async () => {
   const notifications = await Notification.find();
-  notifications.push({
-    _id: 'test',
-    recurring: true,
-    // day: 6,
-    date: new Date(new Date().getTime() + 60000),
-  });
-  notifications.map((notification) => {
-    const date = new Date(notification.date);
-    const day =
-      notification.day === undefined ? '*' : (notification.day + 1) % 7;
-    console.log(date);
-    const cronDate = notification.recurring
-      ? //'* 3 14 * * *'
-        `0 ${date.getMinutes()} ${date.getHours()} * * ${day}`
-      : new Date(notification.date);
+  // notifications.push({
+  //   _id: 'test',
+  //   recurring: true,
+  //   // day: 6,
+  //   date: new Date(new Date().getTime() + 60000),
+  // });
+  notifications.map(runNotification);
+};
 
-    cronJobs[notification._id]?.stop();
-    const job = new CronJob(
-      cronDate,
-      // '* * * * * *',
-      () => cronTask(notification),
-      null,
-      false
-    );
-    cronJobs[notification._id] = job;
-    job.start();
-    console.log(notification, job, 'start');
-    return job;
-  });
+export const runNotification = (notification) => {
+  if (
+    !notification.recurring &&
+    new Date(notification.date).getTime() < Date.now()
+  ) {
+    Notification.findByIdAndRemove(notification._id);
+    return;
+  }
+  const date = new Date(notification.date);
+  const day = notification.day === undefined ? '*' : (notification.day + 1) % 7;
+  console.log(date);
+  const cronDate = notification.recurring
+    ? `0 ${date.getMinutes()} ${date.getHours()} * * ${day}`
+    : new Date(notification.date);
+
+  cronDate.setSeconds(0);
+  cronJobs[notification._id]?.stop();
+  const job = new CronJob(cronDate, () => cronTask(notification), null, false);
+  cronJobs[notification._id] = job;
+  job.start();
+  console.log(notification, 'start');
+  return job;
 };

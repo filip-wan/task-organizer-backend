@@ -12,10 +12,7 @@ const timeTableRouter = (router) => {
 
   router.get('/calendar/events', secured, async (req, res) => {
     if (req.user?.userData?.google) {
-      const {
-        _accessToken: access_token,
-        _refreshToken: refresh_token,
-      } = req.user?.credentials;
+      const { access_token, refresh_token } = req.user?.credentials;
       const oauth2Client = new OAuth2();
       oauth2Client.credentials = {
         access_token,
@@ -39,10 +36,7 @@ const timeTableRouter = (router) => {
 
   router.get('/calendars', secured, async (req, res) => {
     if (req.user?.userData?.google) {
-      const {
-        _accessToken: access_token,
-        _refreshToken: refresh_token,
-      } = req.user?.credentials;
+      const { access_token, refresh_token } = req.user?.credentials;
       const oauth2Client = new OAuth2();
       oauth2Client.credentials = {
         access_token,

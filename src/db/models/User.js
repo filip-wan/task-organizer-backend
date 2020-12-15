@@ -18,10 +18,10 @@ const userSchema = mongoose.Schema({
     type: String,
   },
   credentials: {
-    _accessToken: {
+    accessToken: {
       type: String,
     },
-    _refreshToken: {
+    refreshToken: {
       type: String,
     },
   },
