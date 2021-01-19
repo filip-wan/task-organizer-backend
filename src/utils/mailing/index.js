@@ -26,8 +26,6 @@ export const sendMail = (notification, callback) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
     }
     callback(error, info);
   });

@@ -5,11 +5,6 @@ import { sendMail } from './mailing/index.js';
 const cronJobs = {};
 
 const cronTask = (notification) => {
-  console.log(
-    'You will see this message every second',
-    notification._id,
-    notification.label
-  );
   sendMail(notification, console.log);
   if (!notification.recurring) {
     cronJobs[notification._id]?.stop();
@@ -38,16 +33,14 @@ export const runNotification = (notification) => {
   }
   const date = new Date(notification.date);
   const day = notification.day === undefined ? '*' : (notification.day + 1) % 7;
-  console.log(date);
   const cronDate = notification.recurring
     ? `0 ${date.getMinutes()} ${date.getHours()} * * ${day}`
     : new Date(notification.date);
 
-  cronDate.setSeconds(0);
+  cronDate.setSeconds?.(0);
   cronJobs[notification._id]?.stop();
   const job = new CronJob(cronDate, () => cronTask(notification), null, false);
   cronJobs[notification._id] = job;
   job.start();
-  console.log(notification, 'start');
   return job;
 };

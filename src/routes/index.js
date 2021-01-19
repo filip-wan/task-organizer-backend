@@ -5,6 +5,7 @@ import notesRouter from './notesRouter.js';
 import notificationRouter from './notificationRouter.js';
 import timeTablesRouter from './timeTablesRouter.js';
 import todosRouter from './todosRouter.js';
+import userRouter from './userRouter.js';
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ router.get('/', (req, res, next) => {
   notificationRouter,
   todosRouter,
   categoriesRouter,
+  userRouter,
 ].forEach((r) => r(router));
 
 export default router;

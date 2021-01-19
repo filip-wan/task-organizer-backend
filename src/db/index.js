@@ -20,15 +20,6 @@ const initializeDatabase = () => {
       console.log(error, 'mongo error');
     }
   );
-
-  getUser(function (err, bio) {
-    if (err) console.log('Get User Error', err);
-    console.log({
-      status: 'success',
-      message: 'Got Data Successfully!',
-      data: bio,
-    });
-  });
 };
 
 export default initializeDatabase;

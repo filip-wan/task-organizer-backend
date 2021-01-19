@@ -36,7 +36,6 @@ const notificationRouter = (router) => {
 
   router.post('/notification', secured, async (req, res) => {
     const { label, description, recurring, date, day, item } = req.body;
-    console.log(req.user.userData.email);
     const notification = new Notification({
       label,
       description,
